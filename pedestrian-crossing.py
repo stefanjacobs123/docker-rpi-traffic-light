@@ -1,4 +1,5 @@
-# based on the sample code from http://www.bobrathbone.com/pi_traffic_led.htm
+# based on the sample code
+# from http://www.bobrathbone.com/pi_traffic_led.htm
 
 # First we need to import the libraries that
 # we need
@@ -46,7 +47,7 @@ GPIO.output(CARS_GREEN,GPIO.LOW)
 GPIO.output(PEDESTRIANS_RED,GPIO.LOW)
 GPIO.output(PEDESTRIANS_GREEN,GPIO.LOW)
 
-# This loop runs forever and flashes the LED
+# This loop runs forever and handles the button and LEDs
 while True:
     # Turn on the green LED for cars
     GPIO.output(CARS_GREEN,GPIO.HIGH)
@@ -57,36 +58,36 @@ while True:
     # Wait until a pedestrian presses the switch
     print "Press button"
     while not ButtonPressed:
-        # Wait for 2 seconds
         time.sleep(1)
         ButtonPressed = GPIO.input(SWITCH)
 
     print "Button pressed"
-    # Turn off the green LED
+    # Turn off the green LED for cars, turn on the yellow LED
     GPIO.output(CARS_GREEN,GPIO.LOW)
-    # Turn on the yellow LED
     GPIO.output(CARS_YELLOW,GPIO.HIGH)
     print "Yellow"
-    # Wait for 2 seconds
-    time.sleep(2)
+    # Wait for 3 seconds
+    time.sleep(3)
+    # Turn on the red LED for cars, turn off the yellow LED
     GPIO.output(CARS_YELLOW,GPIO.LOW)
-    # Turn on the red LED for cars
     GPIO.output(CARS_RED,GPIO.HIGH)
     print "Red"
-    # Wait for 4 seconds
-    time.sleep(4)
-    GPIO.output(PEDESTRIANS_RED,GPIO.LOW)
+    # Wait for 3 seconds
+    time.sleep(3)
     # Turn on the green LED for pedestrians
+    GPIO.output(PEDESTRIANS_RED,GPIO.LOW)
     GPIO.output(PEDESTRIANS_GREEN,GPIO.HIGH)
     time.sleep(5)
-    GPIO.output(PEDESTRIANS_GREEN,GPIO.LOW)
     # Turn on the red LED for pedestrians
+    GPIO.output(PEDESTRIANS_GREEN,GPIO.LOW)
     GPIO.output(PEDESTRIANS_RED,GPIO.HIGH)
-    # Wait for 2 seconds
-    time.sleep(2)
+    # Wait for 4 seconds
+    time.sleep(4)
 
     print "Red and yellow"
+    # Turn on the yellow LED, the red one is still on
     GPIO.output(CARS_YELLOW,GPIO.HIGH)
-    time.sleep(4)
+    time.sleep(2)
+    # Turn off the LED for cars, the green one is turned in next loop
     GPIO.output(CARS_YELLOW,GPIO.LOW)
     GPIO.output(CARS_RED,GPIO.LOW)
