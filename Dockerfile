@@ -4,6 +4,13 @@ RUN apt-get update && \
     apt-get install -y gcc python-smbus && \
     pip install RPi.GPIO
 
-CMD ["python", "pedestrian-crossing.py"]
+COPY Adafruit_Python_MCP3008 /opt/gpio-spi
 
-COPY pedestrian-crossing.py /data
+RUN cd Adafruit_Python_MCP3008
+
+RUN python setup.py install
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]
