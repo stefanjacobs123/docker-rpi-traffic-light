@@ -6,7 +6,7 @@ RUN apt-get update && \
 
 COPY Adafruit_Python_MCP3008 /opt/gpio-spi
 
-RUN cd Adafruit_Python_MCP3008
+RUN cd /opt/gpio-spi/Adafruit_Python_MCP3008
 
 RUN python setup.py install
 
