@@ -78,3 +78,4 @@ while True:
     GPIO.output(RELAY_7, GPIO.HIGH)
     GPIO.output(RELAY_8, GPIO.HIGH)
 
+GPIO.cleanup()
