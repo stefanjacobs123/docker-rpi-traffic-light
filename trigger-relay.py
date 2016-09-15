@@ -16,78 +16,62 @@ import RPi.GPIO as GPIO
 
 # Set up the GPIO library to use Raspberry Pi
 # board pin numbers
+# http://raspberrypi.stackexchange.com/questions/12966/what-is-the-difference-between-board-and-bcm-for-gpio-pin-numbering
+# GPIO.BOARD relates to Pi 2 Physical numbers
 GPIO.setmode(GPIO.BOARD)
-# Set up the pin numbers we are using for each LED
-# pin number          # Adafruit T-Cobbler
-CARS_RED=15           # #22
-CARS_YELLOW=13        # #27
-CARS_GREEN=11         # #17
 
-PEDESTRIANS_RED=18    # #24
-PEDESTRIANS_GREEN=16  # #23
+#  +-----+-----+---------+------+---+---Pi 2---+---+------+---------+-----+-----+
+#  | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
+#  +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
+#  |   0 |  30 |   SDA.0 |   IN | 1 | 27 || 28 | 1 | IN   | SCL.0   | 31  | 1   |
+#  |   5 |  21 | GPIO.21 |   IN | 1 | 29 || 30 |   |      | 0v      |     |     |
+#  |   6 |  22 | GPIO.22 |   IN | 1 | 31 || 32 | 0 | IN   | GPIO.26 | 26  | 12  |
+#  |  13 |  23 | GPIO.23 |   IN | 0 | 33 || 34 |   |      | 0v      |     |     |
+#  |  19 |  24 | GPIO.24 |   IN | 0 | 35 || 36 | 0 | IN   | GPIO.27 | 27  | 16  |
+#  |  26 |  25 | GPIO.25 |   IN | 0 | 37 || 38 | 0 | IN   | GPIO.28 | 28  | 20  |
+#  |     |     |      0v |      |   | 39 || 40 | 0 | IN   | GPIO.29 | 29  | 21  |
 
-# Define the pin for the switch
-SWITCH=22             # #25
 
-# Set Pin 11, 16 and 7 on the GPIO header to act as an output
-GPIO.setup(CARS_RED,GPIO.OUT)
-GPIO.setup(CARS_YELLOW,GPIO.OUT)
-GPIO.setup(CARS_GREEN,GPIO.OUT)
+# Setup pin numbers for each rela
+# pin number (relay nr. refer to channel of ULN2803A)
+RELAY_1 = 31
+RELAY_2 = 33
+RELAY_3 = 35
+RELAY_4 = 37
+RELAY_5 = 32
+RELAY_6 = 36
+RELAY_7 = 38
+RELAY_8 = 40
 
-GPIO.setup(PEDESTRIANS_RED,GPIO.OUT)
-GPIO.setup(PEDESTRIANS_GREEN,GPIO.OUT)
+# Define all pins as output pins - need to give current
+GPIO.setup(RELAY_1, GPIO.OUT)
+GPIO.setup(RELAY_2, GPIO.OUT)
+GPIO.setup(RELAY_3, GPIO.OUT)
+GPIO.setup(RELAY_4, GPIO.OUT)
+GPIO.setup(RELAY_5, GPIO.OUT)
+GPIO.setup(RELAY_6, GPIO.OUT)
+GPIO.setup(RELAY_7, GPIO.OUT)
+GPIO.setup(RELAY_8, GPIO.OUT)
 
-# Set up pin 22 (SWITCH) to act as an input
-GPIO.setup(SWITCH,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
-
-# Reset all LEDs
-GPIO.output(CARS_RED,GPIO.LOW)
-GPIO.output(CARS_YELLOW,GPIO.LOW)
-GPIO.output(CARS_GREEN,GPIO.LOW)
-GPIO.output(PEDESTRIANS_RED,GPIO.LOW)
-GPIO.output(PEDESTRIANS_GREEN,GPIO.LOW)
+# Reset all pins to low (some pins are default high)
+GPIO.output(RELAY_1, GPIO.LOW)
+GPIO.output(RELAY_2, GPIO.LOW)
+GPIO.output(RELAY_3, GPIO.LOW)
+GPIO.output(RELAY_4, GPIO.LOW)
+GPIO.output(RELAY_5, GPIO.LOW)
+GPIO.output(RELAY_6, GPIO.LOW)
+GPIO.output(RELAY_7, GPIO.LOW)
+GPIO.output(RELAY_8, GPIO.LOW)
 
 # This loop runs forever and handles the button and LEDs
 while True:
     # Turn on the green LED for cars
-    GPIO.output(CARS_GREEN,GPIO.HIGH)
-    GPIO.output(PEDESTRIANS_RED,GPIO.HIGH)
-    print "Green"
-    ButtonPressed = False
+    GPIO.output(RELAY_1, GPIO.HIGH)
+    GPIO.output(RELAY_2, GPIO.HIGH)
+    GPIO.output(RELAY_3, GPIO.HIGH)
+    GPIO.output(RELAY_4, GPIO.HIGH)
+    GPIO.output(RELAY_5, GPIO.HIGH)
+    GPIO.output(RELAY_6, GPIO.HIGH)
+    GPIO.output(RELAY_7, GPIO.HIGH)
+    GPIO.output(RELAY_8, GPIO.HIGH)
 
-    # Wait until a pedestrian presses the switch
-    print "Press button"
-    while not ButtonPressed:
-        time.sleep(1)
-        ButtonPressed = GPIO.input(SWITCH)
-
-    print "Button pressed"
-    # Turn off the green LED for cars, turn on the yellow LED
-    GPIO.output(CARS_GREEN,GPIO.LOW)
-    GPIO.output(CARS_YELLOW,GPIO.HIGH)
-    print "Yellow"
-    # Wait for 3 seconds
-    time.sleep(3)
-    # Turn on the red LED for cars, turn off the yellow LED
-    GPIO.output(CARS_YELLOW,GPIO.LOW)
-    GPIO.output(CARS_RED,GPIO.HIGH)
-    print "Red"
-    # Wait for 3 seconds
-    time.sleep(3)
-    # Turn on the green LED for pedestrians
-    GPIO.output(PEDESTRIANS_RED,GPIO.LOW)
-    GPIO.output(PEDESTRIANS_GREEN,GPIO.HIGH)
-    time.sleep(5)
-    # Turn on the red LED for pedestrians
-    GPIO.output(PEDESTRIANS_GREEN,GPIO.LOW)
-    GPIO.output(PEDESTRIANS_RED,GPIO.HIGH)
-    # Wait for 4 seconds
-    time.sleep(4)
-
-    print "Red and yellow"
-    # Turn on the yellow LED, the red one is still on
-    GPIO.output(CARS_YELLOW,GPIO.HIGH)
-    time.sleep(2)
-    # Turn off the LED for cars, the green one is turned in next loop
-    GPIO.output(CARS_YELLOW,GPIO.LOW)
-    GPIO.output(CARS_RED,GPIO.LOW)
