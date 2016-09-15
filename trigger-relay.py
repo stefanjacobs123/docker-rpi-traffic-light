@@ -63,6 +63,9 @@ GPIO.output(RELAY_6, GPIO.LOW)
 GPIO.output(RELAY_7, GPIO.LOW)
 GPIO.output(RELAY_8, GPIO.LOW)
 
+# enough time to run 'docker run --rm --cap-add SYS_RAWIO --device /dev/mem hypriot/rpi-gpio readall' and see if pins are low
+time.sleep(15)
+
 # This loop runs forever and handles the button and LEDs
 while True:
     # Turn on the green LED for cars
