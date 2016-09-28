@@ -34,14 +34,14 @@ GPIO.setmode(GPIO.BOARD)
 
 # Setup pin numbers for each rela
 # pin number (relay nr. refer to channel of ULN2803A)
-RELAY_1 = 31
-RELAY_2 = 33
-RELAY_3 = 35
-RELAY_4 = 37
-RELAY_5 = 32
-RELAY_6 = 36
-RELAY_7 = 38
-RELAY_8 = 40
+RELAY_1 = 31 # blou
+RELAY_2 = 33 # blou & wit
+RELAY_3 = 35 # bruin
+RELAY_4 = 37 # bruin & wit
+RELAY_5 = 32 # wit & groen
+RELAY_6 = 36 # groen
+RELAY_7 = 38 # oranje
+RELAY_8 = 40 # wit & oranje
 
 # Define all pins as output pins - need to give current
 GPIO.setup(RELAY_1, GPIO.OUT)
